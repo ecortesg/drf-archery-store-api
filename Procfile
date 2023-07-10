@@ -1,1 +1,1 @@
-web: gunicorn archery_store_api.wsgi
+web: python manage.py migrate && python manage.py collectstatic && gunicorn archery_store_api.wsgi
