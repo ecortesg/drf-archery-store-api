@@ -1,1 +1,1 @@
-web: gunicorn archery_store_api.wsgi --log-file -
+web: gunicorn archery_store_api.wsgi
