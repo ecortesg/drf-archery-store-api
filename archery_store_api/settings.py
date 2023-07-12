@@ -32,7 +32,7 @@ SECRET_KEY = env('SECRET_KEY')
 # False if not in os.environ because of casting above
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['drf-archery-store-api.up.railway.app', '127.0.0.1']
+ALLOWED_HOSTS = ['drf-archery-store-api.up.railway.app', '127.0.0.1', 'localhost']
 
 CSRF_TRUSTED_ORIGINS = ['https://drf-archery-store-api.up.railway.app']
 
@@ -142,7 +142,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
+CORS_ALLOWED_ORIGINS = ['http://localhost:5173', 'https://archery-store.vercel.app']
 
 # Stripe
 STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY')
