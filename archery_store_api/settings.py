@@ -147,3 +147,7 @@ CORS_ALLOWED_ORIGINS = ['http://localhost:5173', 'https://archery-store.vercel.a
 # Stripe
 STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
+
+# Base and Front-end URL
+BASE_URL = env('BASE_URL')
+FRONTEND_URL = env('FRONTEND_URL')

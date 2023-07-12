@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.conf import settings
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -14,7 +13,7 @@ def checkout(request):
     
     if serializer.is_valid():
         stripe.api_key = settings.STRIPE_SECRET_KEY
-        YOUR_DOMAIN = "http://localhost:5173"
+        YOUR_DOMAIN = settings.FRONTEND_URL
         try:
             total_amount = 0
             product_list = []
