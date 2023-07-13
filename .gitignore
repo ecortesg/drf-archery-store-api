@@ -4,5 +4,5 @@ __pycache__
 .env
 staticfiles
 .vscode
-media/uploads/images/*
-media/uploads/thumbnails/*
+media/uploads/images/*.jpg
+media/uploads/thumbnails/*.jpg
