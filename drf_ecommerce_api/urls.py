@@ -1,5 +1,5 @@
 """
-URL configuration for archery_store_api project.
+URL configuration for drf_ecommerce_api project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/v1/', include('product.urls')),
-    path('api/v1/', include('order.urls')),
+    path("admin/", admin.site.urls),
+    path("api/v1/", include("product.urls")),
+    path("api/v1/", include("order.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
