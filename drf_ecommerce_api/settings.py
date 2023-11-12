@@ -32,9 +32,9 @@ SECRET_KEY = env("SECRET_KEY")
 # False if not in os.environ because of casting above
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = ["drf-archery-store-api.up.railway.app", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["drf-ecommerce-api.up.railway.app", "127.0.0.1", "localhost"]
 
-CSRF_TRUSTED_ORIGINS = ["https://drf-archery-store-api.up.railway.app"]
+CSRF_TRUSTED_ORIGINS = ["https://drf-ecommerce-api.up.railway.app"]
 
 
 # Application definition
