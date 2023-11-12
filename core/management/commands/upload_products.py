@@ -7,7 +7,7 @@ from PIL import Image
 from django.core.management.base import BaseCommand
 from django.core.files import File
 from product.factories import BrandFactory, CategoryFactory, ProductFactory
-from product.models import ProductDetailImage
+from product.models import ProductDetailImage, Product
 
 
 class Command(BaseCommand):
@@ -61,13 +61,14 @@ class Command(BaseCommand):
                     print(os.path.basename(image_url))
 
                     # Create Product instance
-                    product = ProductFactory.create(
+                    product = Product(
                         name=row["Name"],
                         category=category,
                         brand=brand,
                         price=price_decimal,
                         image=image_file,
                     )
+                    product.save()
                     # Upload additional images for the product detail view
                     detail_image = ProductDetailImage(
                         product=product, image=product.image
