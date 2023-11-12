@@ -25,6 +25,8 @@ class Command(BaseCommand):
                 f"products.csv",
             )
         )
+        print(csv_filename)
+
         with open(csv_filename, "r", encoding="utf-8") as csv_file:
             csv_reader = csv.DictReader(csv_file)
             for row in csv_reader:
@@ -55,6 +57,8 @@ class Command(BaseCommand):
 
                     # Create a File object from the image data
                     image_file = File(image_data, name=os.path.basename(image_url))
+
+                    print(os.path.basename(image_url))
 
                     # Create Product instance
                     product = ProductFactory.create(
