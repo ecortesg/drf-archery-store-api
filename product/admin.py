@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Brand, Category, Product, ProductDetailImage
+from .models import Brand, Category, Product, DetailImage
 
 
 class BrandAdmin(admin.ModelAdmin):
@@ -18,4 +18,4 @@ admin.site.register(Brand, BrandAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
 
-admin.site.register([ProductDetailImage])
+admin.site.register([DetailImage])

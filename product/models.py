@@ -94,6 +94,6 @@ class Product(AbstractBaseModel):
         return thumbnail
 
 
-class ProductDetailImage(AbstractBaseModel):
+class DetailImage(AbstractBaseModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=update_image_name)
