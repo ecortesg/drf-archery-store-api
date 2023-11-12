@@ -31,3 +31,4 @@ class ProductFactory(factory.django.DjangoModelFactory):
     price = factory.Faker("pydecimal", min_value=100, max_value=5000)
     category = factory.Iterator(Category.objects.all())
     brand = factory.Iterator(Brand.objects.all())
+    image = None
