@@ -7,7 +7,6 @@ from PIL import Image
 from django.core.management.base import BaseCommand
 from django.core.files import File
 from product.factories import BrandFactory, CategoryFactory, ProductFactory
-from product.models import ProductDetailImage, Product
 
 
 class Command(BaseCommand):
@@ -58,22 +57,14 @@ class Command(BaseCommand):
                     # Create a File object from the image data
                     image_file = File(image_data, name=os.path.basename(image_url))
 
-                    print(os.path.basename(image_url))
-
                     # Create Product instance
-                    product = Product(
+                    product = ProductFactory.create(
                         name=row["Name"],
                         category=category,
                         brand=brand,
                         price=price_decimal,
                         image=image_file,
                     )
-                    product.save()
-                    # Upload additional images for the product detail view
-                    detail_image = ProductDetailImage(
-                        product=product, image=product.image
-                    )
-                    detail_image.save()
                 else:
                     print(f"Failed to download image from {image_url}")
 

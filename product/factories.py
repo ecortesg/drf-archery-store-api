@@ -1,6 +1,6 @@
 import factory
 from django.utils.text import slugify
-from .models import Brand, Category, Product
+from .models import Brand, Category, Product, ProductDetailImage
 
 
 class BrandFactory(factory.django.DjangoModelFactory):
@@ -32,3 +32,8 @@ class ProductFactory(factory.django.DjangoModelFactory):
     category = factory.Iterator(Category.objects.all())
     brand = factory.Iterator(Brand.objects.all())
     image = None
+
+    @factory.post_generation
+    def create_detail_image(self, create, extracted, **kwargs):
+        if create:
+            ProductDetailImage.create(product=self, image=self.image)
