@@ -11,3 +11,31 @@ venv/Scripts/activate
 (.venv) python manage.py createsuperuser
 (.venv) python manage.py runserver
 ```
+
+## Railway
+
+### Deployment
+
+- Deploy on Railway from GitHub
+- Set ALLOWED_HOSTS and CSRF_TRUSTED_ORIGINS
+- Create a Postgres database
+- Add environment variables, including the DATABASE_URL
+- Install Railway Client with Node.js
+
+```shell
+npm install -g @railway/cli
+```
+
+- Configure a superuser
+
+```shell
+railway login
+railway link
+railway run python manage.py createsuperuser
+```
+
+### Debugging
+
+```shell
+railway logs
+```
