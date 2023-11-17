@@ -23,4 +23,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include("product.urls")),
     path("api/v1/", include("order.urls")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if not settings.USE_S3:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -6,7 +6,13 @@ from io import BytesIO
 from PIL import Image
 from django.core.management.base import BaseCommand
 from django.core.files import File
-from product.factories import BrandFactory, CategoryFactory, ProductFactory
+from product.factories import (
+    BrandFactory,
+    CategoryFactory,
+    ProductFactory,
+    ProductImageFactory,
+)
+from django.utils.text import slugify
 
 
 class Command(BaseCommand):
@@ -24,7 +30,6 @@ class Command(BaseCommand):
                 f"products.csv",
             )
         )
-        print(csv_filename)
 
         with open(csv_filename, "r", encoding="utf-8") as csv_file:
             csv_reader = csv.DictReader(csv_file)
@@ -55,14 +60,23 @@ class Command(BaseCommand):
                         continue
 
                     # Create a File object from the image data
-                    image_file = File(image_data, name=os.path.basename(image_url))
+                    filename = os.path.basename(image_url)
+                    name, extension = os.path.splitext(filename)
+                    image_name = slugify(row["Name"]) + extension
+                    image_file = File(image_data, name=image_name)
 
-                    # Create Product instance
+                    # Create Product
                     product = ProductFactory.create(
                         name=row["Name"],
                         category=category,
                         brand=brand,
                         price=price_decimal,
+                        thumbnail=image_file,
+                    )
+
+                    # Create Product Image
+                    product_image = ProductImageFactory.create(
+                        product=product,
                         image=image_file,
                     )
                 else:

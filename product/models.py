@@ -5,18 +5,15 @@ from PIL import Image
 import os
 from django.conf import settings
 from core.models import AbstractBaseModel
+from drf_ecommerce_api.storage_backends import PublicMediaStorage
+from django.core.files.storage import FileSystemStorage
 
 
-def update_image_name(instance, filename):
-    path = "uploads/images/"
-    name = instance.slug + os.path.splitext(filename)[1]
-    return os.path.join(path, name)
-
-
-def update_thumbnail_name(instance, filename):
-    path = "uploads/thumbnails/"
-    name = instance.slug + os.path.splitext(filename)[1]
-    return os.path.join(path, name)
+def ImageStorage():
+    if settings.USE_S3:
+        return PublicMediaStorage()
+    else:
+        return FileSystemStorage()
 
 
 class Brand(AbstractBaseModel):
@@ -51,10 +48,7 @@ class Product(AbstractBaseModel):
         Category, related_name="products", on_delete=models.CASCADE
     )
     brand = models.ForeignKey(Brand, related_name="products", on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=update_image_name, blank=True, null=True)
-    thumbnail = models.ImageField(
-        upload_to=update_thumbnail_name, blank=True, null=True
-    )
+    thumbnail = models.ImageField(storage=ImageStorage())
 
     class Meta:
         ordering = ("-created_at",)
@@ -65,35 +59,21 @@ class Product(AbstractBaseModel):
     def get_absolute_url(self):
         return f"/{self.category.slug}/{self.slug}"
 
-    def get_image(self):
-        if self.image:
-            return settings.BASE_URL + self.image.url
-        return ""
-
-    def get_thumbnail(self):
+    def save(self, *args, **kwargs):
         if self.thumbnail:
-            return settings.BASE_URL + self.thumbnail.url
-        else:
-            if self.image:
-                self.thumbnail = self.make_thumbnail(self.image)
-                self.save()
-                return settings.BASE_URL + self.thumbnail.url
-            else:
-                return ""
+            img = Image.open(self.thumbnail)
+            max_width = 300
+            max_height = 300
+            img.thumbnail((max_width, max_height), Image.ANTIALIAS)
 
-    def get_image_name(self):
-        return os.path.basename(self.image.name)
+            thumb_io = BytesIO()
+            img.save(thumb_io, format="JPEG", quality=85)
+            thumbnail = File(thumb_io, name=f"thumb-{self.thumbnail.name}")
+            self.thumbnail = thumbnail
 
-    def make_thumbnail(self, image, size=(300, 200)):
-        img = Image.open(image)
-        img.convert("RGB")
-        img.thumbnail(size)
-        thumb_io = BytesIO()
-        img.save(thumb_io, "JPEG", quality=85)
-        thumbnail = File(thumb_io, name=self.get_image_name())
-        return thumbnail
+        super().save(*args, **kwargs)
 
 
-class DetailImage(AbstractBaseModel):
+class ProductImage(AbstractBaseModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=update_image_name)
+    image = models.ImageField(storage=ImageStorage())

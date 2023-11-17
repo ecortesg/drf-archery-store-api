@@ -1,6 +1,6 @@
 import factory
 from django.utils.text import slugify
-from .models import Brand, Category, Product, DetailImage
+from .models import Brand, Category, Product, ProductImage
 
 
 class BrandFactory(factory.django.DjangoModelFactory):
@@ -21,14 +21,6 @@ class CategoryFactory(factory.django.DjangoModelFactory):
     slug = factory.LazyAttribute(lambda obj: slugify(obj.name))
 
 
-class DetailImageFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = DetailImage
-
-    product = factory.Iterator(Product.objects.all())
-    image = factory.Faker("file_name", extension="jpg")
-
-
 class ProductFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Product
@@ -39,9 +31,12 @@ class ProductFactory(factory.django.DjangoModelFactory):
     price = factory.Faker("pydecimal", min_value=100, max_value=5000)
     category = factory.Iterator(Category.objects.all())
     brand = factory.Iterator(Brand.objects.all())
-    image = None
+    thumbnail = factory.Faker("file_name", extension="jpg")
 
-    @factory.post_generation
-    def create_detail_image(self, create, extracted, **kwargs):
-        if create:
-            DetailImageFactory.create(product=self, image=self.image)
+
+class ProductImageFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = ProductImage
+
+    product = factory.Iterator(Product.objects.all())
+    image = factory.Faker("file_name", extension="jpg")

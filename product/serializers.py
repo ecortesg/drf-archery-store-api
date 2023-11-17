@@ -16,12 +16,12 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = (
             "uuid",
             "name",
-            "get_absolute_url",
             "description",
             "price",
             "category",
-            "get_image",
-            "get_thumbnail",
+            "brand",
+            "thumbnail",
+            "get_absolute_url",
         )
 
 
