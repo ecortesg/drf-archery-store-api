@@ -165,7 +165,7 @@ else:
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "https://archery-store.vercel.app"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "https://mui-ecommerce.vercel.app"]
 
 # Custom User
 AUTH_USER_MODEL = "user.User"

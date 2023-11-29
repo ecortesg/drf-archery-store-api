@@ -1,16 +1,14 @@
 import csv
 import os
 import requests
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from io import BytesIO
 from PIL import Image
 from django.core.management.base import BaseCommand
 from django.core.files import File
 from product.factories import (
-    BrandFactory,
     CategoryFactory,
     ProductFactory,
-    ProductImageFactory,
 )
 from django.utils.text import slugify
 
@@ -27,24 +25,36 @@ class Command(BaseCommand):
                 "..",
                 "product",
                 "data",
-                f"products.csv",
+                "All Exercise and Fitness.csv",
             )
         )
 
         with open(csv_filename, "r", encoding="utf-8") as csv_file:
             csv_reader = csv.DictReader(csv_file)
             for row in csv_reader:
-                # Create or get product's brand and category
-                brand = BrandFactory.create(name=row["Brand"])
-                category = CategoryFactory.create(name=row["Category"])
+                # Create or get product's category
+                category = CategoryFactory.create(name="Sports and Fitness")
 
                 # Convert the 'price' string to a Decimal
-                price_str = row["Price"]
-                price_str = price_str.replace("$", "").replace(",", "")
-                price_decimal = Decimal(price_str)
+                price = row["actual_price"]
+                if price:
+                    price_str = price.replace("$", "").replace(",", "").replace("₹", "")
+                    try:
+                        price_decimal = Decimal(price_str)
+                    except InvalidOperation as e:
+                        print(f"Failed to convert '{price_str}' to Decimal: {e}")
+                        continue
+                else:
+                    print("Price is empty. Skipping processing for this row.")
+                    continue
+
+                # Convert indian rupee to dollar and round
+                usd_conversion_rate = Decimal("83")
+                price_in_usd = price_decimal / usd_conversion_rate
+                price_in_usd_rounded = round(price_in_usd, 0)
 
                 # Download the image from the URL
-                image_url = row["Image"]
+                image_url = row["image"]
                 response = requests.get(image_url)
 
                 # Check if the request was successful
@@ -62,23 +72,17 @@ class Command(BaseCommand):
                     # Create a File object from the image data
                     filename = os.path.basename(image_url)
                     name, extension = os.path.splitext(filename)
-                    image_name = slugify(row["Name"]) + extension
+                    image_name = slugify(row["name"]) + extension
                     image_file = File(image_data, name=image_name)
 
                     # Create Product
                     product = ProductFactory.create(
-                        name=row["Name"],
+                        name=row["name"],
                         category=category,
-                        brand=brand,
-                        price=price_decimal,
-                        thumbnail=image_file,
-                    )
-
-                    # Create Product Image
-                    product_image = ProductImageFactory.create(
-                        product=product,
+                        price=price_in_usd_rounded,
                         image=image_file,
                     )
+
                 else:
                     print(f"Failed to download image from {image_url}")
 

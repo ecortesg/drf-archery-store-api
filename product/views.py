@@ -1,58 +1,62 @@
-from .serializers import ProductSerializer, CategorySerializer
-from .models import Product, Category
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from django.db.models import Q
-from django.shortcuts import get_object_or_404
-from rest_framework.generics import ListAPIView
+from rest_framework import generics
+from .serializers import ProductSerializer, CarouselImageSerializer
+from .models import Product, CarouselImage
 
 
-class LatestProducts(APIView):
-    def get(self, request):
-        products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
-
-
-class LatestProducts2(ListAPIView):
+class ProductsNewArrivals(generics.ListAPIView):
     serializer_class = ProductSerializer
 
     def get_queryset(self):
-        products = Product.objects.all()
+        products = Product.objects.all().order_by("-release_date")[:18]
         return products
 
 
-class ProductDetail(APIView):
-    def get_object(self, category_slug, product_slug):
-        return get_object_or_404(
-            Product, slug=product_slug, category__slug=category_slug
-        )
+class ProductsBestSellers(generics.ListAPIView):
+    serializer_class = ProductSerializer
 
-    def get(self, request, category_slug, product_slug):
-        product = self.get_object(category_slug, product_slug)
-        serializer = ProductSerializer(product)
-        return Response(serializer.data)
+    def get_queryset(self):
+        products = Product.objects.all().order_by("release_date")[:18]
+        return products
 
 
-class CategoryDetail(APIView):
-    def get_object(self, category_slug):
-        return get_object_or_404(Category, slug=category_slug)
+class ProductsOnSale(generics.ListAPIView):
+    serializer_class = ProductSerializer
 
-    def get(self, request, category_slug):
-        category = self.get_object(category_slug)
-        serializer = CategorySerializer(category)
-        return Response(serializer.data)
+    def get_queryset(self):
+        products = Product.objects.filter(discount__gt=0).order_by("release_date")[:18]
+        return products
 
 
-@api_view(["POST"])
-def search(request):
-    query = request.data.get("query", "")
-    if query:
-        products = Product.objects.filter(
-            Q(name__icontains=query) | Q(description__icontains=query)
-        )
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
-    else:
-        return Response({"products": []})
+class SearchProducts(generics.ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        query = self.request.query_params.get("query")
+        if query:
+            return Product.objects.filter(name__icontains=query)
+
+        return Product.objects.none()
+
+
+class ProductDetail(generics.RetrieveAPIView):
+    serializer_class = ProductSerializer
+    lookup_url_kwarg = "product_uuid"
+
+    def get_queryset(self):
+        return Product.objects.filter(uuid=self.kwargs.get("product_uuid"))
+
+
+class ProductRelated(generics.ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        return Product.objects.exclude(uuid=self.kwargs.get("product_uuid")).order_by(
+            "?"
+        )[:6]
+
+
+class CarouselImages(generics.ListAPIView):
+    serializer_class = CarouselImageSerializer
+
+    def get_queryset(self):
+        return CarouselImage.objects.all().order_by("order")

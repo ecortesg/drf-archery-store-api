@@ -22,7 +22,7 @@ def checkout(request):
                 count = item.get("count")
                 product_details = {
                     "price_data": {
-                        "currency": "mxn",
+                        "currency": "usd",
                         "product_data": {
                             "name": product.name,
                         },

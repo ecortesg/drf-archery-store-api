@@ -3,11 +3,17 @@ from . import views
 
 
 urlpatterns = [
-    path("latest-products/", views.LatestProducts2.as_view()),
-    path("products/search/", views.search),
+    path("carousel-images/", views.CarouselImages.as_view()),
+    path("products/new-arrivals/", views.ProductsNewArrivals.as_view()),
+    path("products/best-sellers/", views.ProductsBestSellers.as_view()),
+    path("products/on-sale/", views.ProductsOnSale.as_view()),
+    path("products/search/", views.SearchProducts.as_view()),
     path(
-        "products/<slug:category_slug>/<slug:product_slug>/",
+        "product/<str:product_uuid>/",
         views.ProductDetail.as_view(),
     ),
-    path("products/<slug:category_slug>/", views.CategoryDetail.as_view()),
+    path(
+        "product/<str:product_uuid>/related/",
+        views.ProductRelated.as_view(),
+    ),
 ]

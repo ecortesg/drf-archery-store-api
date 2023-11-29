@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Product
+from .models import Category, Product, CarouselImage
 
 
 class CategoryNameSerializer(serializers.ModelSerializer):
@@ -19,15 +19,12 @@ class ProductSerializer(serializers.ModelSerializer):
             "description",
             "price",
             "category",
-            "brand",
-            "thumbnail",
+            "image",
             "get_absolute_url",
         )
 
 
-class CategorySerializer(serializers.ModelSerializer):
-    products = ProductSerializer(many=True)
-
+class CarouselImageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Category
-        fields = ("uuid", "name", "get_absolute_url", "products")
+        model = CarouselImage
+        fields = ("uuid", "name", "image")
