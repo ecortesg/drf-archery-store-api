@@ -26,12 +26,12 @@ def checkout(request):
                         "product_data": {
                             "name": product.name,
                         },
-                        "unit_amount": int(product.price * 100),
+                        "unit_amount": int(float(product.discounted_price) * 100),
                     },
                     "quantity": count,
                 }
                 product_list.append(product_details)
-                total_amount += product.price * count
+                total_amount += float(product.discounted_price) * count
 
             checkout_session = stripe.checkout.Session.create(
                 line_items=product_list,

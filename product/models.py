@@ -44,10 +44,12 @@ class Product(AbstractBaseModel):
     release_date = models.DateField()
 
     @property
-    def price_after_discount(self):
+    def discounted_price(self):
         if self.discount > 0:
-            return self.price * (1 - self.discount)
-        return self.price
+            discounted_price = self.price * (1 - self.discount)
+            rounded_price = round(discounted_price, 2)
+            return str(rounded_price)
+        return str(self.price)
 
     @property
     def discount_amount(self):

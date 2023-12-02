@@ -18,6 +18,8 @@ class ProductSerializer(serializers.ModelSerializer):
             "name",
             "description",
             "price",
+            "discount",
+            "discounted_price",
             "category",
             "image",
             "get_absolute_url",
