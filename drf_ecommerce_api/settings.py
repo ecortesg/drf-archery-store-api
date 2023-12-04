@@ -170,6 +170,11 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "https://mui-ecommerce.vercel.a
 # Custom User
 AUTH_USER_MODEL = "user.User"
 
+# Django Rest Framework
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "core.pagination.StandardResultsSetPagination"
+}
+
 # Stripe
 STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY")
 STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
