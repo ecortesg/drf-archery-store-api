@@ -1,16 +1,18 @@
 from django.conf import settings
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
-import stripe
+from rest_framework import generics
+from rest_framework import status
 from .serializers import OrderSerializer
+import stripe
 
 
-@api_view(["POST"])
-def checkout(request):
-    data = request.data
-    serializer = OrderSerializer(data=data)
+class CheckoutView(generics.GenericAPIView):
+    serializer_class = OrderSerializer
 
-    if serializer.is_valid():
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
         stripe.api_key = settings.STRIPE_SECRET_KEY
         YOUR_DOMAIN = settings.FRONTEND_URL
         try:
@@ -46,9 +48,10 @@ def checkout(request):
                 total_amount=total_amount, stripe_session_id=checkout_session.id
             )
 
-            return Response({"id": checkout_session.id}, 201)
+            return Response({"id": checkout_session.id}, status=status.HTTP_201_CREATED)
 
         except Exception as e:
-            return Response({"error": {"message": str(e)}}, 500)
-
-    return Response(serializer.errors, 400)
+            return Response(
+                {"error": {"message": str(e)}},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )

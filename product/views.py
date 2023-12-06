@@ -3,7 +3,7 @@ from .serializers import ProductSerializer, CarouselImageSerializer
 from .models import Product, CarouselImage
 
 
-class ProductsNewArrivals(generics.ListAPIView):
+class ProductNewArrivals(generics.ListAPIView):
     serializer_class = ProductSerializer
 
     def get_queryset(self):
@@ -11,7 +11,7 @@ class ProductsNewArrivals(generics.ListAPIView):
         return products
 
 
-class ProductsBestSellers(generics.ListAPIView):
+class ProductBestSellers(generics.ListAPIView):
     serializer_class = ProductSerializer
 
     def get_queryset(self):
@@ -19,7 +19,7 @@ class ProductsBestSellers(generics.ListAPIView):
         return products
 
 
-class ProductsOnSale(generics.ListAPIView):
+class ProductOnSale(generics.ListAPIView):
     serializer_class = ProductSerializer
 
     def get_queryset(self):
@@ -27,7 +27,7 @@ class ProductsOnSale(generics.ListAPIView):
         return products
 
 
-class SearchProducts(generics.ListAPIView):
+class ProductSearch(generics.ListAPIView):
     serializer_class = ProductSerializer
 
     def get_queryset(self):

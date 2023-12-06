@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "storages",
+    "drf_spectacular",
     "django_cleanup.apps.CleanupConfig",
 ]
 
@@ -172,12 +173,15 @@ AUTH_USER_MODEL = "user.User"
 
 # Django Rest Framework
 REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "core.pagination.StandardResultsSetPagination"
+    "DEFAULT_PAGINATION_CLASS": "core.pagination.StandardResultsSetPagination",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
-# Stripe
-STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY")
-STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
+# DRF SPECTACULAR
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Django Rest Framework Ecommerce",
+    "SCHEMA_PATH_PREFIX": "/api/v[0-9]",
+}
 
 # Base and Front-end URL
 BASE_URL = env("BASE_URL")
@@ -185,3 +189,7 @@ FRONTEND_URL = env("FRONTEND_URL")
 
 # Generate API URLs using HTTPS
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# Stripe
+STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY")
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
