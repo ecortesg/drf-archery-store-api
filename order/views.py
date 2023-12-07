@@ -38,7 +38,7 @@ class CheckoutView(generics.GenericAPIView):
             checkout_session = stripe.checkout.Session.create(
                 line_items=product_list,
                 mode="payment",
-                success_url=YOUR_DOMAIN + "/checkout/success",
+                success_url=YOUR_DOMAIN + "checkout/success/",
                 cancel_url=YOUR_DOMAIN,
                 customer_email=serializer.validated_data.get("email"),
                 payment_method_types=["card"],
