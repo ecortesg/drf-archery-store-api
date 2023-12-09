@@ -39,3 +39,13 @@ railway run python manage.py createsuperuser
 ```shell
 railway logs
 ```
+
+## API Reference
+
+# Swagger UI
+
+https://drf-ecommerce-api.up.railway.app/api/schema/swagger-ui/
+
+# ReDoc
+
+https://drf-ecommerce-api.up.railway.app/api/schema/redoc/

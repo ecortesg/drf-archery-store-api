@@ -1,6 +1,8 @@
 from rest_framework import generics
 from .serializers import ProductSerializer, CarouselImageSerializer
 from .models import Product, CarouselImage
+from core.pagination import StandardResultsSetPagination
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 
 
 class ProductNewArrivals(generics.ListAPIView):
@@ -29,6 +31,7 @@ class ProductOnSale(generics.ListAPIView):
 
 class ProductSearch(generics.ListAPIView):
     serializer_class = ProductSerializer
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         query = self.request.query_params.get("query")
@@ -36,6 +39,18 @@ class ProductSearch(generics.ListAPIView):
             return Product.objects.filter(name__icontains=query)
 
         return Product.objects.none()
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="query",
+                description="Search query to filter products by name.",
+                type=str,
+            ),
+        ]
+    )
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
 
 class ProductDetail(generics.RetrieveAPIView):

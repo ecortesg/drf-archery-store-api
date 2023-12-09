@@ -173,7 +173,6 @@ AUTH_USER_MODEL = "user.User"
 
 # Django Rest Framework
 REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "core.pagination.StandardResultsSetPagination",
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 

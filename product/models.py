@@ -5,6 +5,7 @@ from django.core.validators import MinValueValidator
 from core.models import AbstractBaseModel
 from drf_ecommerce_api.storage_backends import PublicMediaStorage
 from decimal import Decimal
+from drf_spectacular.utils import extend_schema_field
 
 
 def ImageStorage():
@@ -44,6 +45,7 @@ class Product(AbstractBaseModel):
     release_date = models.DateField()
 
     @property
+    @extend_schema_field(str)
     def discounted_price(self):
         if self.discount > 0:
             discounted_price = self.price * (1 - self.discount)
@@ -51,12 +53,7 @@ class Product(AbstractBaseModel):
             return str(rounded_price)
         return str(self.price)
 
-    @property
-    def discount_amount(self):
-        if self.discount > 0:
-            return self.price * self.discount
-        return 0
-
+    @extend_schema_field(str)
     def get_absolute_url(self):
         return f"/{self.category.slug}/{self.slug}/{self.uuid}/"
 
