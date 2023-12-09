@@ -42,10 +42,10 @@ railway logs
 
 ## API Reference
 
-# Swagger UI
+### Swagger UI
 
 https://drf-ecommerce-api.up.railway.app/api/schema/swagger-ui/
 
-# ReDoc
+### ReDoc
 
 https://drf-ecommerce-api.up.railway.app/api/schema/redoc/

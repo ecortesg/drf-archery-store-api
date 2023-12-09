@@ -33,7 +33,7 @@ class OrderProduct(AbstractBaseModel):
     product = models.ForeignKey(
         Product, related_name="ordered_product", on_delete=models.CASCADE
     )
-    count = models.IntegerField(default=1)
+    count = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return f"{self.id}"
