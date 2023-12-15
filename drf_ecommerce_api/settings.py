@@ -176,7 +176,7 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
-# DRF SPECTACULAR
+# DRF Spectacular
 SPECTACULAR_SETTINGS = {
     "TITLE": "Django Rest Framework Ecommerce",
     "SCHEMA_PATH_PREFIX": "/api/v[0-9]",

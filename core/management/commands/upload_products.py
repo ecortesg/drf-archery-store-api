@@ -64,7 +64,7 @@ class Command(BaseCommand):
 
                     # Open the image using Pillow (PIL) to ensure it's a valid image
                     try:
-                        image = Image.open(image_data)
+                        Image.open(image_data)
                     except Exception as e:
                         print(f"Failed to open the image from {image_url}: {e}")
                         continue
@@ -76,7 +76,7 @@ class Command(BaseCommand):
                     image_file = File(image_data, name=image_name)
 
                     # Create Product
-                    product = ProductFactory.create(
+                    ProductFactory.create(
                         name=row["name"],
                         category=category,
                         price=price_in_usd_rounded,
