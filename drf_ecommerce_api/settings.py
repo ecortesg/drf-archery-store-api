@@ -14,6 +14,7 @@ from pathlib import Path
 import environ
 import os
 import dj_database_url
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
     "order",
     # External Packages
     "rest_framework",
+    "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
     "storages",
     "drf_spectacular",
@@ -173,8 +175,22 @@ AUTH_USER_MODEL = "user.User"
 
 # Django Rest Framework
 REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": ["core.permissions.DenyAny"],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication"
+    ],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
+
+# Simple JWT
+SIMPLE_JWT = {
+    "USER_ID_FIELD": "uuid",
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+}
+
 
 # DRF Spectacular
 SPECTACULAR_SETTINGS = {

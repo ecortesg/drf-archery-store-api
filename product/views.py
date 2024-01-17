@@ -1,11 +1,12 @@
-from rest_framework import generics
-from .serializers import ProductSerializer, CarouselImageSerializer
-from .models import Product, CarouselImage
+from rest_framework import generics, permissions
 from core.pagination import StandardResultsSetPagination
 from drf_spectacular.utils import extend_schema, OpenApiParameter
+from .models import Product, CarouselImage
+from .serializers import ProductSerializer, CarouselImageSerializer
 
 
 class ProductNewArrivals(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
     serializer_class = ProductSerializer
 
     def get_queryset(self):
@@ -14,6 +15,7 @@ class ProductNewArrivals(generics.ListAPIView):
 
 
 class ProductBestSellers(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
     serializer_class = ProductSerializer
 
     def get_queryset(self):
@@ -22,6 +24,7 @@ class ProductBestSellers(generics.ListAPIView):
 
 
 class ProductOnSale(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
     serializer_class = ProductSerializer
 
     def get_queryset(self):
@@ -30,6 +33,7 @@ class ProductOnSale(generics.ListAPIView):
 
 
 class ProductSearch(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
     serializer_class = ProductSerializer
     pagination_class = StandardResultsSetPagination
 
@@ -54,6 +58,7 @@ class ProductSearch(generics.ListAPIView):
 
 
 class ProductDetail(generics.RetrieveAPIView):
+    permission_classes = [permissions.AllowAny]
     serializer_class = ProductSerializer
     lookup_url_kwarg = "product_uuid"
 
@@ -62,6 +67,7 @@ class ProductDetail(generics.RetrieveAPIView):
 
 
 class ProductRelated(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
     serializer_class = ProductSerializer
 
     def get_queryset(self):
@@ -71,6 +77,7 @@ class ProductRelated(generics.ListAPIView):
 
 
 class CarouselImages(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
     serializer_class = CarouselImageSerializer
 
     def get_queryset(self):

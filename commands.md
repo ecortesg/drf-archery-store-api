@@ -7,6 +7,7 @@ django-environ
 django-storages
 django-cleanup
 drf-spectacular
+djangorestframework-simplejwt
 boto3
 
 # Commands
