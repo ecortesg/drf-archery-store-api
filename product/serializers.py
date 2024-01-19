@@ -30,3 +30,15 @@ class CarouselImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarouselImage
         fields = ("uuid", "name", "image")
+
+
+class HomeSerializer(serializers.Serializer):
+    carousel_images = CarouselImageSerializer(many=True)
+    new_arrivals = ProductSerializer(many=True)
+    best_sellers = ProductSerializer(many=True)
+    sale_items = ProductSerializer(many=True)
+
+
+class ProductDetailSerializer(serializers.Serializer):
+    details = ProductSerializer()
+    related_products = ProductSerializer(many=True)
