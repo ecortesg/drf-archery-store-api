@@ -1,16 +1,17 @@
-from django.conf import settings
-from rest_framework.response import Response
-from rest_framework import generics
-from rest_framework import status
-from .serializers import OrderSerializer
 import stripe
+from django.conf import settings
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import permissions, status
+from .serializers import OrderSerializer
 
 
-class CheckoutView(generics.GenericAPIView):
+class CheckoutView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = OrderSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         stripe.api_key = settings.STRIPE_SECRET_KEY

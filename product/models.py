@@ -33,7 +33,7 @@ class Category(AbstractBaseModel):
 class Product(AbstractBaseModel):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True)
     category = models.ForeignKey(
         Category, related_name="products", on_delete=models.CASCADE
     )

@@ -13,13 +13,8 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBaseModel):
     )
     is_active = models.BooleanField(
         "active status",
-        default=False,
+        default=True,
         help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
-    )
-    is_blocked = models.BooleanField(
-        "block status",
-        default=False,
-        help_text="Designates whether this user is temporarily blocked",
     )
 
     USERNAME_FIELD = "email"

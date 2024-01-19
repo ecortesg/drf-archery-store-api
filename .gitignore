@@ -6,3 +6,4 @@ static
 media
 .vscode
 schema.yml
+requests.http
