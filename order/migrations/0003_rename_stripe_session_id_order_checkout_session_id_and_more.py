@@ -6,22 +6,25 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('order', '0002_alter_orderproduct_count'),
+        ("order", "0002_alter_orderproduct_count"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='order',
-            old_name='stripe_session_id',
-            new_name='checkout_session_id',
+            model_name="order",
+            old_name="stripe_session_id",
+            new_name="checkout_session_id",
         ),
         migrations.AddField(
-            model_name='order',
-            name='user',
-            field=models.ForeignKey(default='080710cb-97df-4e1c-95ec-fe1dd5036249', on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="order",
+            name="user",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+            ),
             preserve_default=False,
         ),
     ]

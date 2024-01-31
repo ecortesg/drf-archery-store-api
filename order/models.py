@@ -7,7 +7,7 @@ from django.core.validators import MinValueValidator
 
 
 class Order(AbstractBaseModel):
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, null=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
