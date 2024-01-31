@@ -54,7 +54,6 @@ class MyOrderProductSerializer(serializers.ModelSerializer):
 
 class MyOrderSerializer(serializers.ModelSerializer):
     products = MyOrderProductSerializer(many=True)
-    created_at = serializers.DateTimeField(format="%Y-%m-%d")
 
     class Meta:
         model = Order
