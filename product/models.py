@@ -23,11 +23,11 @@ class Category(AbstractBaseModel):
         ordering = ("name",)
         verbose_name_plural = "Categories"
 
-    def __str__(self):
-        return self.name
-
     def get_absolute_url(self):
         return f"/{self.slug}"
+
+    def __str__(self):
+        return self.name
 
 
 class Product(AbstractBaseModel):

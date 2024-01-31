@@ -14,6 +14,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = [
+            "user",
             "first_name",
             "last_name",
             "country",
@@ -24,7 +25,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "zip_code",
             "email",
             "phone_number",
-            "stripe_session_id",
+            "checkout_session_id",
             "products",
         ]
 
@@ -38,3 +39,28 @@ class OrderSerializer(serializers.ModelSerializer):
             )
 
         return order
+
+
+class MyOrderProductSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = OrderProduct
+        fields = ["uuid", "name", "count", "price", "total"]
+
+    def get_name(self, obj):
+        return obj.product.name
+
+
+class MyOrderSerializer(serializers.ModelSerializer):
+    products = MyOrderProductSerializer(many=True)
+    created_at = serializers.DateTimeField(format="%Y-%m-%d")
+
+    class Meta:
+        model = Order
+        fields = [
+            "uuid",
+            "created_at",
+            "total",
+            "products",
+        ]

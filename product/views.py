@@ -27,7 +27,7 @@ class HomeView(APIView):
                 "best_sellers": best_sellers,
                 "sale_items": sale_items,
             },
-            # Allows the serializer to build the full URL for the image path
+            # To properly generate fully qualified URLs for the images
             context={"request": request},
         )
 
@@ -46,7 +46,7 @@ class ProductDetailView(APIView):
             {
                 "details": product,
                 "related_products": related_products,
-            },  # Allows the serializer to build the full URL for the image path
+            },  # To properly generate fully qualified URLs for the images
             context={"request": request},
         )
 
